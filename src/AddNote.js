@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-const AddNote = () => {
+const AddNote = ({ addNoteInternal }) => {
     const [note, setNote] = useState({ title: "", description: "", tag: "" });
 
     const handleClick = (e) => {
         e.preventDefault();
+        addNoteInternal(note); 
         setNote({ title: "", description: "", tag: "" }); 
     }
 
