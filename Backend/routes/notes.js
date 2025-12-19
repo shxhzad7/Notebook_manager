@@ -35,6 +35,15 @@ router.post(
     }
 );
 
+// FETCH NOTES
+router.get('/fetchallnotes', async (req, res) => {
+    try {
+        const notes = await Note.find();
+        res.json(notes);
+    } catch (error) {
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 
 module.exports = router;

@@ -1,48 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddNote from './AddNote';
 import NoteItem from './NoteItem';
 
 const Notes = () => {
     const [notes, setNotes] = useState([]);
 
-    const addNoteInternal = (note) => {
-        const newNote = { ...note, _id: Date.now() };
-        setNotes([...notes, newNote]);
-    }
+    const fetchNotes = async () => {
+        const res = await fetch('http://localhost:5000/api/notes/fetchallnotes');
+        const data = await res.json();
+        setNotes(data);
+    };
 
-    const deleteNote = (id) => {
-        setNotes(notes.filter(note => note._id !== id));
-    }
-
-    const updateNote = (note) => {
-        const newTitle = prompt("Enter new title", note.title);
-        const newDescription = prompt("Enter new description", note.description);
-
-        if (newTitle && newDescription) {
-            setNotes(notes.map(n =>
-                n._id === note._id
-                    ? { ...n, title: newTitle, description: newDescription }
-                    : n
-            ));
-        }
-    }
+    useEffect(() => {
+        fetchNotes();
+    }, [notes]);
 
     return (
         <div className="container">
-            <AddNote addNoteInternal={addNoteInternal} />
+            <AddNote />
 
             <div className="row">
                 {notes.map(note => (
-                    <NoteItem
-                        key={note._id}
-                        note={note}
-                        deleteNote={deleteNote}
-                        updateNote={updateNote}
-                    />
+                    <NoteItem key={note._id} note={note} />
                 ))}
             </div>
         </div>
     );
-}
+};
 
 export default Notes;
