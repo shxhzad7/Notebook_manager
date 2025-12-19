@@ -1,10 +1,15 @@
+// import AddNote from './AddNote';
 import './App.css';
+import Notes from './Note';
 
 function App() {
   return (
-    <div className="App">
-    <button type="button" class="btn btn-primary">Primary</button>
-    </div>
+    <>
+      <div className='container'>
+      {/* <AddNote/> */}
+      <Notes/>
+      </div>
+    </>
   );
 }
 
