@@ -23,7 +23,7 @@ router.post(
             const note = new Note({
                 title,
                 description,
-                tag
+                tag: tag?.trim() ? tag : "General"
             });
 
             const savedNote = await note.save();
@@ -40,6 +40,24 @@ router.get('/fetchallnotes', async (req, res) => {
     try {
         const notes = await Note.find();
         res.json(notes);
+    } catch (error) {
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+// ROUTE: Delete a note
+router.delete('/deletenote/:id', async (req, res) => {
+    try {
+        const note = await Note.findById(req.params.id);
+
+        if (!note) {
+            return res.status(404).json({ error: "Note not found" });
+        }
+
+        await Note.findByIdAndDelete(req.params.id);
+
+        res.json({ success: true });
     } catch (error) {
         res.status(500).send("Internal Server Error");
     }
