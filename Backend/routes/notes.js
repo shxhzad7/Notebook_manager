@@ -64,4 +64,26 @@ router.delete('/deletenote/:id', async (req, res) => {
 });
 
 
+// ROUTE: Update a note
+router.put('/updatenote/:id', async (req, res) => {
+    const { title, description, tag } = req.body;
+
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and Description are required" });
+    }
+
+    try {
+        const updatedNote = await Note.findByIdAndUpdate(
+            req.params.id,
+            { title, description, tag },
+            { new: true }
+        );
+
+        res.json(updatedNote);
+    } catch (error) {
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
 module.exports = router;
